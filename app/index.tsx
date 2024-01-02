@@ -1,12 +1,22 @@
 import { View, Text, Button, Image } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import * as ImagePicker from 'expo-image-picker';
 import { useMMKVString } from 'react-native-mmkv';
+import { hello } from '../modules/galaxies';
 
 const index = () => {
 
     const [image, setImage] = useState<string | null>(null)
     const [username, setUsername] = useMMKVString('user.name')
+
+    useEffect(() => {
+        const sayHello = () => {
+            const response = hello()
+            console.log(response)
+        }
+        sayHello()
+    }
+    , [])
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({

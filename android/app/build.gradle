@@ -81,7 +81,7 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.modulesapp"
+    namespace 'com.iuiu.modulesApp'
     defaultConfig {
         applicationId 'com.iuiu.modulesApp'
         minSdkVersion rootProject.ext.minSdkVersion
