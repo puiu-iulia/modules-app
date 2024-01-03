@@ -2,6 +2,8 @@ package expo.modules.galaxies
 
 import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
+import android.content.pm.PackageInfo
+import android.os.Build
 
 class GalaxiesModule : Module() {
 
