@@ -19,8 +19,11 @@ public class GalaxiesModule: Module {
     Events("onChange")
 
     // Defines a JavaScript synchronous function that runs the native code on the JavaScript thread.
-    Function("hello") {
-      return "Hello world! 👋"
+    Function("getDeviceInfo") { () -> [String: String] in
+      return [
+        "deviceModel": UIDevice.current.model,
+        "appVersion": Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+      ]
     }
 
     // Defines a JavaScript function that always returns a Promise and whose native code

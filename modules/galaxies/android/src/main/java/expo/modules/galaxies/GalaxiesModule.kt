@@ -4,6 +4,13 @@ import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
 
 class GalaxiesModule : Module() {
+
+     private fun getPackageInfo(): PackageInfo {
+        return context.packageManager.getPackageInfo(context.packageName, 0)
+    }
+
+    private val context
+        get() = requireNotNull(appContext.reactContext)
   // Each module class must implement the definition function. The definition consists of components
   // that describes the module's functionality and behavior.
   // See https://docs.expo.dev/modules/module-api for more details about available components.
@@ -22,8 +29,14 @@ class GalaxiesModule : Module() {
     Events("onChange")
 
     // Defines a JavaScript synchronous function that runs the native code on the JavaScript thread.
-    Function("hello") {
-      "Hello world! 👋"
+    Function("getDeviceInfo") {
+        val deviceModel = Build.MODEL ?: "Unknown"
+        val appVersion = getPackageInfo()?.versionName ?: "Unknown"
+
+        return@Function mapOf(
+            "deviceModel" to deviceModel,
+            "appVersion" to appVersion
+        )
     }
 
     // Defines a JavaScript function that always returns a Promise and whose native code

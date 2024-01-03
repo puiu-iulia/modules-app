@@ -2,19 +2,19 @@ import { View, Text, Button, Image } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import * as ImagePicker from 'expo-image-picker';
 import { useMMKVString } from 'react-native-mmkv';
-import { hello } from '../modules/galaxies';
+import { getDeviceInfo } from '../modules/galaxies';
 
 const index = () => {
 
-    const [image, setImage] = useState<string | null>(null)
-    const [username, setUsername] = useMMKVString('user.name')
+    const [image, setImage] = useState<string | null>(null);
+    const [username, setUsername] = useMMKVString('user.name');
+    const [deviceModel, setDeviceModel] = useState<string | null>(null);
+    const [appVersion, setAppVersion] = useState<string | null>(null);
 
     useEffect(() => {
-        const sayHello = () => {
-            const response = hello()
-            console.log(response)
-        }
-        sayHello()
+        const info = getDeviceInfo();
+        setDeviceModel(info.deviceModel);
+        setAppVersion(info.appVersion);
     }
     , [])
 
@@ -39,6 +39,8 @@ const index = () => {
             {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
             <Text>Username: {username}</Text>
             <Button title="setUsername" onPress={() => setUsername('John Doe')} />
+            <Text>Device Model: {deviceModel}</Text>
+            <Text>App Version: {appVersion}</Text>
         </View>
     )
 }

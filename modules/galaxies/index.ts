@@ -9,8 +9,8 @@ import { ChangeEventPayload, GalaxiesViewProps } from './src/Galaxies.types';
 // Get the native constant value.
 export const PI = GalaxiesModule.PI;
 
-export function hello(): string {
-  return GalaxiesModule.hello();
+export function getDeviceInfo(): {deviceModel: string, appVersion: string} {
+  return GalaxiesModule.getDeviceInfo();
 }
 
 export async function setValueAsync(value: string) {
