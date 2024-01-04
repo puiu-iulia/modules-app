@@ -16,7 +16,7 @@ public class GalaxiesModule: Module {
     ])
 
     // Defines event names that the module can send to JavaScript.
-    Events("onChange")
+    Events("gotData")
 
     // Defines a JavaScript synchronous function that runs the native code on the JavaScript thread.
     Function("getDeviceInfo") { () -> [String: String] in
@@ -24,6 +24,27 @@ public class GalaxiesModule: Module {
         "deviceModel": UIDevice.current.model,
         "appVersion": Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
       ]
+    }
+
+    Function("loadDummyUser") { () -> Void in
+  
+      let url = URL(string: "https://jsonplaceholder.typicode.com/users/2")!
+      let task = URLSession.shared.dataTask(with: url) { data, response, error in
+          guard let data = data else {
+              print("Error: \(error?.localizedDescription ?? "Unknown error")")
+              return
+          }
+          do {
+              let json = try JSONSerialization.jsonObject(with: data, options: [])
+              print(json)
+              self.sendEvent("gotData", [
+                  "data": json
+              ])
+          } catch let error as NSError {
+              print("Error: \(error.localizedDescription)")
+          }
+      }
+      task.resume()
     }
 
     // Defines a JavaScript function that always returns a Promise and whose native code

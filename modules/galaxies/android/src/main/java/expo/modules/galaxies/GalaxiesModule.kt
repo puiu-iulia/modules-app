@@ -28,7 +28,7 @@ class GalaxiesModule : Module() {
     )
 
     // Defines event names that the module can send to JavaScript.
-    Events("onChange")
+    Events("gotData")
 
     // Defines a JavaScript synchronous function that runs the native code on the JavaScript thread.
     Function("getDeviceInfo") {
@@ -39,6 +39,17 @@ class GalaxiesModule : Module() {
             "deviceModel" to deviceModel,
             "appVersion" to appVersion
         )
+    }
+
+    // Function that makes an HTTP call to get dummy user from JSONPlaceholder API.
+
+    AsyncFunction("loadDummyUser") {
+        val response = fetch("https://jsonplaceholder.typicode.com/users/2").readText()
+        val jsonObject = JSONObject(response)
+       
+        this@GalaxiesModule.sendEvent("gotData", mapOf(
+            "data" to jsonObject.toMap()
+        ))
     }
 
     // Defines a JavaScript function that always returns a Promise and whose native code

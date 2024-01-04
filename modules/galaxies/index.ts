@@ -4,7 +4,7 @@ import { NativeModulesProxy, EventEmitter, Subscription } from 'expo-modules-cor
 // and on native platforms to Galaxies.ts
 import GalaxiesModule from './src/GalaxiesModule';
 import GalaxiesView from './src/GalaxiesView';
-import { ChangeEventPayload, GalaxiesViewProps } from './src/Galaxies.types';
+import { DataEventPayload, GalaxiesViewProps } from './src/Galaxies.types';
 
 // Get the native constant value.
 export const PI = GalaxiesModule.PI;
@@ -13,14 +13,14 @@ export function getDeviceInfo(): {deviceModel: string, appVersion: string} {
   return GalaxiesModule.getDeviceInfo();
 }
 
-export async function setValueAsync(value: string) {
-  return await GalaxiesModule.setValueAsync(value);
-}
+export async function loadDummyUser() {
+  return await GalaxiesModule.loadDummyUser();
+} 
 
 const emitter = new EventEmitter(GalaxiesModule ?? NativeModulesProxy.Galaxies);
 
-export function addChangeListener(listener: (event: ChangeEventPayload) => void): Subscription {
-  return emitter.addListener<ChangeEventPayload>('onChange', listener);
+export function addDataListener(listener: (event: DataEventPayload) => void): Subscription {
+  return emitter.addListener<DataEventPayload>('gotData', listener);
 }
 
-export { GalaxiesView, GalaxiesViewProps, ChangeEventPayload };
+export { GalaxiesView, GalaxiesViewProps, DataEventPayload };

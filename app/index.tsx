@@ -1,8 +1,8 @@
-import { View, Text, Button, Image } from 'react-native'
+import { View, Text, Button, Image, Alert } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import * as ImagePicker from 'expo-image-picker';
 import { useMMKVString } from 'react-native-mmkv';
-import { getDeviceInfo } from '../modules/galaxies';
+import { getDeviceInfo, loadDummyUser, addDataListener } from '../modules/galaxies';
 
 const index = () => {
 
@@ -15,9 +15,18 @@ const index = () => {
         const info = getDeviceInfo();
         setDeviceModel(info.deviceModel);
         setAppVersion(info.appVersion);
-    }
-    , [])
+    }, [])
 
+    useEffect(() => {
+        const subscription = addDataListener((value: {data: any}) => {
+          console.log('Data received: ', value);
+          Alert.alert('User loaded', JSON.stringify(value.data.name));
+        });
+
+        return () => {
+            subscription.remove();
+        }
+    }, [])
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -41,6 +50,7 @@ const index = () => {
             <Button title="setUsername" onPress={() => setUsername('John Doe')} />
             <Text>Device Model: {deviceModel}</Text>
             <Text>App Version: {appVersion}</Text>
+            <Button title="Load Dummy User" onPress={loadDummyUser} />
         </View>
     )
 }
